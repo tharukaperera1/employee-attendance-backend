@@ -43,4 +43,25 @@ public class AuthService {
 
         return new AuthResponse(token);
     }
+
+    public AuthResponse login(LoginRequest request) {
+
+        User user = userRepository
+                .findByUsername(request.getUsername())
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword())) {
+
+            throw new RuntimeException("Invalid password");
+        }
+
+        String token =
+                jwtService.generateToken(
+                        user.getUsername());
+
+        return new AuthResponse(token);
+    }
 }
