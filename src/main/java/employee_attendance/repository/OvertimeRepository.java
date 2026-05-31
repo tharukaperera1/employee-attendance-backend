@@ -12,6 +12,8 @@ public interface OvertimeRepository
 
     List<OvertimeRequest> findByEmployeeId(Long employeeId);
 
+    long countByStatus(String status);
+
     @Query("""
             SELECT COALESCE(SUM(o.hours),0)
             FROM OvertimeRequest o
